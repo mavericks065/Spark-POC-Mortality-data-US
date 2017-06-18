@@ -11,9 +11,11 @@ object Main {
 
   def main(args: Array[String]) {
 
+    val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US.csv"
+
     val sparkBuilder = SparkSession
       .builder()
-      .master("local[1]")
+      .master("local[2]")
       .appName(appName)
 
     val spark = sparkBuilder.getOrCreate()
@@ -21,9 +23,10 @@ object Main {
     val statisticsConfig = new StatisticsCoreConfig(spark)
     val baseStatistics = new BaseStatistics(spark)
 
-    logger.info(statisticsConfig)
-    logger.info(baseStatistics)
+    println(statisticsConfig)
+    println(baseStatistics)
 
+//    baseStatistics.buildReport(statisticsConfig)
     spark.stop()
   }
 }

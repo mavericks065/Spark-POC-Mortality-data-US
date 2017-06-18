@@ -10,5 +10,4 @@ object BaseStatistics extends Serializable {
 class BaseStatistics(sparkSession: SparkSession) {
   def buildReport(statisticsConfig: StatisticsCoreConfig) = ???
 
-
 }
