@@ -14,4 +14,11 @@ libraryDependencies += "org.apache.spark" % "spark-sql_2.11" % "2.0.0"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-api" % "2.8.1"
 libraryDependencies += "org.apache.logging.log4j" % "log4j-core" % "2.8.1"
 
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
+
+mainClass in assembly := Some("com.ng.poc.spark.mortality.run.Main")
+
 scalacOptions in Test ++= Seq("-Yrangepos")
