@@ -12,4 +12,11 @@ object SparkReadWriteUtil {
       .option("mode", "FAILFAST")
       .schema(encoder.schema).csv(filePath).as(encoder)
   }
+
+  def writeReport[T](dataset: Dataset[T], outputPath: String): Unit = {
+    dataset.write
+      .option("nullValue", "NULL")
+      .option("delimiter", ",")
+      .csv(outputPath)
+  }
 }
