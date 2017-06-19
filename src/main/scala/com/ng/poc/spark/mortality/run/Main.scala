@@ -26,7 +26,7 @@ object Main {
     println(statisticsConfig)
     println(baseStatistics)
 
-//    baseStatistics.buildReport(statisticsConfig)
+    baseStatistics.buildReport(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
     spark.stop()
   }
 }

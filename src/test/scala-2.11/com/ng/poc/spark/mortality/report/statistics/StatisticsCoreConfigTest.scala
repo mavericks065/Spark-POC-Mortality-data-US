@@ -15,10 +15,12 @@ class StatisticsCoreConfigTest extends Specification {
     "return only the record fields" in {
       val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/Heart_Disease_Mortality_Data_Among_US_Adults__35___by_State_Territory_and_County.csv"
       val statisticsCore = new StatisticsCoreConfig(spark)
-      val resultDataFrame = statisticsCore getBaseDataFrame heartDiseaseMortalityDataCountyFilePath
-      val firstRow = resultDataFrame head
 
-      resultDataFrame.count() must_== 48
+      val resultDataSet = statisticsCore.getBaseDataSet(heartDiseaseMortalityDataCountyFilePath)
+
+      resultDataSet.count() must_== 48
+      resultDataSet.collectAsList().get(0).year must_== 2013
+      resultDataSet.collectAsList().get(0).numberOfDead must_== "147.4"
     }
   }
 }

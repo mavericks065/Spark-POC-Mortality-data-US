@@ -6,19 +6,14 @@ import org.apache.spark.sql.{Dataset, Encoders, _}
 
 class StatisticsCoreConfig(sparkSession: SparkSession) extends Serializable {
 
-  def getBaseDataFrame(heartDiseaseMortalityDataCountyFilePath: String): DataFrame = {
-    val baseDataSet = SparkReadWriteUtil.readCSVLocal(sparkSession, Encoders.product[BaseRecord], heartDiseaseMortalityDataCountyFilePath)
-
-    buildBaseDataFrame(baseDataSet)
+  def getBaseDataSet(heartDiseaseMortalityDataCountyFilePath: String): Dataset[BaseRecord] = {
+    SparkReadWriteUtil.readCSVLocal(sparkSession, Encoders.product[BaseRecord], heartDiseaseMortalityDataCountyFilePath)
   }
 
-  private def buildBaseDataFrame(baseDataSet: Dataset[BaseRecord]): DataFrame = {
+  def buildBaseDataFrame(baseDataSet: Dataset[BaseRecord]): DataFrame = {
     val filterExpression = (config: BaseRecord) => true
 
-    val col = Seq("year", "locationState", "location", "geographicLevel", "dataSource",
-      "diseaseClass", "topic", "numberOfDead", "unit", "dataType",
-      "dataSymbol", "dataStrat", "genderCategory", "gender",
-      "raceCategory", "race", "topicId", "zipCode", "coordinates")
+    val col = Seq("year", "locationState", "location", "geographicLevel", "numberOfDead", "gender", "race", "zipCode")
       .map(f => baseDataSet.col(f));
 
     getDataFrame(baseDataSet, col, filterExpression)
