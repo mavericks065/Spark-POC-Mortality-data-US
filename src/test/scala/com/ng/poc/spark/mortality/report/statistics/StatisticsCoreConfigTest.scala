@@ -18,9 +18,9 @@ class StatisticsCoreConfigTest extends Specification {
 
       val resultDataSet = statisticsCore.getBaseDataSet(heartDiseaseMortalityDataCountyFilePath)
 
-      resultDataSet.count() must_== 48
+      resultDataSet.count() must_== 54
       resultDataSet.collectAsList().get(0).year must_== 2013
-      resultDataSet.collectAsList().get(0).numberOfDead must_== "147.4"
+      resultDataSet.collectAsList().get(0).numberOfDead must_== 147.4
     }
   }
 }

@@ -1,4 +1,5 @@
 package com.ng.poc.spark.mortality.datatype
 
-class Record(locationStation: String, Location: String, geographicLevel: String, numberOfDead: Float, gender: String, race: String) {
+case class Record(year: Int, locationState: String, Location: String, geographicLevel: String, numberOfDead: Double,
+             gender: String, race: String) {
 }
