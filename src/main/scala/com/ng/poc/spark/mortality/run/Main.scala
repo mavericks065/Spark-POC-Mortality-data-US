@@ -11,7 +11,7 @@ object Main {
 
   def main(args: Array[String]) {
 
-    val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US.csv"
+    val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/Spark-POC-Mortality-data-US.csv"
 
     val sparkBuilder = SparkSession
       .builder()
@@ -22,9 +22,6 @@ object Main {
 
     val statisticsConfig = new StatisticsCoreConfig(spark)
     val nationStatistics = new NationStatistics(spark)
-
-    println(statisticsConfig)
-    println(nationStatistics)
 
     nationStatistics.buildReport(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
     spark.stop()

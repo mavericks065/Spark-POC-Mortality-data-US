@@ -3,3 +3,6 @@ Heart_Disease_Mortality_Data_Among_US_Adults__35___by_State_Territory_and_County
 metastore_db/*
 project/*
 target/*
+.nationOutputFile.csv.csv.crc
+.outputFile.csv.crc
+Spark-POC-Mortality-data-US.csv
