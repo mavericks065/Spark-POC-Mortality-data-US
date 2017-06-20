@@ -38,7 +38,7 @@ class NationStatisticsTest extends Specification {
 
       val record = nationStatistics.convertBaseRecordToRecord(baseRecord)
 
-      record must_=== expectedRecord
+      record must_== expectedRecord
     }
   }
 }

@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+
+  postgres:
+    image: orchardup/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USER=root
+      - POSTGRESQL_PASS=s3cretP4ssword123456789OverrideInPipeline
+      - POSTGRESQL_DB=sparkpoc
+

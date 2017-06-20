@@ -1,6 +1,6 @@
 package com.ng.poc.spark.mortality.run
 
-import com.ng.poc.spark.mortality.report.statistics.{NationStatistics, NationStatistics$, StatisticsCoreConfig}
+import com.ng.poc.spark.mortality.report.statistics.{NationStatistics, StatisticsCoreConfig}
 import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql._
 
