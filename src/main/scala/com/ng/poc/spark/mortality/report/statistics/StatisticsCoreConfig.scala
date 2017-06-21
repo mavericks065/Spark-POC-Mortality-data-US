@@ -6,9 +6,9 @@ import org.apache.spark.sql.{Dataset, Encoders, _}
 
 class StatisticsCoreConfig(sparkSession: SparkSession) extends Serializable {
 
-  def getBaseDataSet(heartDiseaseMortalityDataCountyFilePath: String): Dataset[BaseRecord] = {
+  def getBaseDataSet = (heartDiseaseMortalityDataCountyFilePath: String) =>
     SparkReadWriteUtil.readCSVLocal(sparkSession, Encoders.product[BaseRecord], heartDiseaseMortalityDataCountyFilePath)
-  }
+
 
   def buildBaseDataFrame(baseDataSet: Dataset[BaseRecord]): DataFrame = {
     val filterExpression = (config: BaseRecord) => true
