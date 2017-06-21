@@ -26,16 +26,16 @@ class NationStatistics(sparkSession: SparkSession) extends Serializable {
     save(nationDs)
   }
 
-  def getNationDataSet = (dataset: Dataset[BaseRecord]) => {
+  val getNationDataSet = (dataset: Dataset[BaseRecord]) => {
     import sparkSession.implicits._
     dataset.filter(filterNationRecords).map(convertBaseRecordToRecord)
   }
 
-  def filterNationRecords: (BaseRecord) => Boolean = {
+  val filterNationRecords: (BaseRecord) => Boolean = {
     data => data.geographicLevel == NationStatistics.nation
   }
 
-  def convertBaseRecordToRecord = (baseRecord: BaseRecord) => new Record(baseRecord.year, baseRecord.locationState,
+  val convertBaseRecordToRecord = (baseRecord: BaseRecord) => new Record(baseRecord.year, baseRecord.locationState,
     baseRecord.location, baseRecord.geographicLevel, baseRecord.numberOfDead,  baseRecord.gender, baseRecord.race)
 
 
