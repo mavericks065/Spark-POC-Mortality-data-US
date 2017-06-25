@@ -23,7 +23,7 @@ object Main {
     val statisticsConfig = new StatisticsCoreConfig(spark)
     val nationStatistics = new NationStatistics(spark)
 
-    nationStatistics.buildReport(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
+    nationStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
     spark.stop()
   }
 }
