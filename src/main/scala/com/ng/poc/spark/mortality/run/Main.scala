@@ -1,6 +1,6 @@
 package com.ng.poc.spark.mortality.run
 
-import com.ng.poc.spark.mortality.report.statistics.{NationStatistics, StateStatistics, StatisticsCoreConfig}
+import com.ng.poc.spark.mortality.report.statistics.{NationStatistics, StateDetailedStatistics, StateDetailedStatistics$, StatisticsCoreConfig}
 import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql._
 
@@ -22,7 +22,7 @@ object Main {
 
     val statisticsConfig = new StatisticsCoreConfig(spark)
     val nationStatistics = new NationStatistics(spark)
-    val stateStatistics = new StateStatistics(spark)
+    val stateStatistics = new StateDetailedStatistics(spark)
 
     nationStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
     stateStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
