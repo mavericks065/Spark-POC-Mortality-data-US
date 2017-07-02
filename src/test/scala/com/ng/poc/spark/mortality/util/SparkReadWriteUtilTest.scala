@@ -15,7 +15,7 @@ class SparkReadWriteUtilTest extends Specification {
 
   "The function write report" should {
     "write a report" in {
-      val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/Heart_Disease_Mortality_Data_Among_US_Adults__35___by_State_Territory_and_County.csv"
+      val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/test_data.csv"
       val outputFile = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/outputFile"
       val statisticsCore = new StatisticsCoreConfig(spark)
       val dataSet = statisticsCore.getBaseDataSet(heartDiseaseMortalityDataCountyFilePath)
