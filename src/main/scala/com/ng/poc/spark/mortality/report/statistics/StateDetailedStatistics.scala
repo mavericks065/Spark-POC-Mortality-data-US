@@ -6,6 +6,8 @@ import com.ng.poc.spark.mortality.util.SparkReadWriteUtil
 import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
+import scala.collection.mutable
+
 object StateDetailedStatistics extends Serializable {
   @transient lazy val logger = LogManager.getLogger(NationStatistics.getClass);
   private val state = "State"
@@ -37,11 +39,12 @@ class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics wit
 
   val getStateDataSet = (dataset: Dataset[BaseRecord]) => {
     import sparkSession.implicits._
-    dataset.filter(filterNationRecords(_, StateDetailedStatistics.state)).map(convertBaseRecordToRecord)
+    dataset.filter(filterRecordsByGeographicLvl(_, StateDetailedStatistics.state)).map(convertBaseRecordToRecord)
   }
 
   val filterDSByRaceAndGender : (Dataset[Record], String, String) => Dataset[Record] = (dataset, race, gender) => {
-    dataset.filter(record => record.race == race && record.gender == gender)
+    val filter : (Record, String, String) => Boolean = (record, race, gender) => {record.race == race && record.gender == gender}
+    dataset.filter(filter(_, race, gender))
   }
 
   val getDataByGenderInDifferentlyOfRace : (Dataset[Record]) => (Dataset[Record], Dataset[Record], Dataset[Record]) = dataset => {
@@ -52,8 +55,9 @@ class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics wit
 
   val getAvgNumberOfDeadPerYear : (Dataset[Record]) => Map[Int, Double] = dataset => {
     import sparkSession.implicits._
-    Map(dataset.groupBy("year").avg("numberOfDead").map(convertRowToTuple)
-      .collect():_*)
+    val array: mutable.WrappedArray[(Int, Double)] = dataset.groupBy("year").avg("numberOfDead").map(convertRowToTuple)
+      .collect()
+    Map(array:_*)
   }
 
   val getBestStateRates : (Dataset[Record], Map[Int, Double]) => Dataset[Record] = (dataset, map) => {

@@ -24,6 +24,6 @@ class NationStatistics(sparkSession: SparkSession) extends Statistics with Seria
 
   val getNationDataSet = (dataset: Dataset[BaseRecord]) => {
     import sparkSession.implicits._
-    dataset.filter(filterNationRecords(_, NationStatistics.nation)).map(convertBaseRecordToRecord)
+    dataset.filter(filterRecordsByGeographicLvl(_, NationStatistics.nation)).map(convertBaseRecordToRecord)
   }
 }

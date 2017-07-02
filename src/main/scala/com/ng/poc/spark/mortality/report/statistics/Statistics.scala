@@ -5,7 +5,7 @@ import com.ng.poc.spark.mortality.datatype.{BaseRecord, Record}
 trait Statistics {
   def runStats(statisticsConfig: StatisticsCoreConfig, file: String): Unit
 
-  val filterNationRecords: (BaseRecord, String) => Boolean = {
+  val filterRecordsByGeographicLvl : (BaseRecord, String) => Boolean = {
     (data, filter) => data.geographicLevel == filter
   }
 
