@@ -1,7 +1,7 @@
 package com.ng.poc.spark.mortality.report.statistics
 
 import com.ng.poc.spark.mortality.datatype.{BaseRecord, Record}
-import com.ng.poc.spark.mortality.util.SparkReadWriteUtil
+import collection.mutable.Map
 import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql.{Dataset, SparkSession}
 
@@ -14,12 +14,12 @@ object NationStatistics extends Serializable {
 class NationStatistics(sparkSession: SparkSession) extends Statistics with Serializable {
 
   override
-  def runStats(statisticsConfig: StatisticsCoreConfig, file: String): Unit = {
+  def runStats(statisticsConfig: StatisticsCoreConfig, file: String): Map[String, Dataset[Record]] = {
     NationStatistics.logger.info("Build report of " + file)
 
     val nationDs = statisticsConfig.getBaseDataSet.andThen(getNationDataSet).apply(file)
 
-    SparkReadWriteUtil.writeReport(nationDs, NationStatistics.nationOutputFilePath)
+    Map(NationStatistics.nationOutputFilePath -> nationDs)
   }
 
   val getNationDataSet = (dataset: Dataset[BaseRecord]) => {

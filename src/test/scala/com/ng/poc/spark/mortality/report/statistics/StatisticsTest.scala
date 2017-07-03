@@ -1,6 +1,7 @@
 package com.ng.poc.spark.mortality.report.statistics
 
 import com.ng.poc.spark.mortality.datatype.{BaseRecord, Record}
+import org.apache.spark.sql.Dataset
 import org.specs2.mutable.Specification
 
 class StatisticsTest extends Specification {
@@ -11,7 +12,8 @@ class StatisticsTest extends Specification {
         "G", "Male", "RC", "Overall", "T", 12, "C")
       val expectedRecord = new Record(2013, "AK", "test", "Nation", 147.9, "Male", "Overall")
       val statistics = new Statistics {
-        override def runStats(statisticsConfig: StatisticsCoreConfig, file: String): Unit = ???
+        override
+        def runStats(statisticsConfig: StatisticsCoreConfig, file: String): collection.mutable.Map[String, Dataset[Record]] = ???
       }
 
       val record = statistics.convertBaseRecordToRecord(baseRecord)

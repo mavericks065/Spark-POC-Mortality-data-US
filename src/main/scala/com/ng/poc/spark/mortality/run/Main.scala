@@ -1,6 +1,7 @@
 package com.ng.poc.spark.mortality.run
 
-import com.ng.poc.spark.mortality.report.statistics.{NationStatistics, StateDetailedStatistics, StateDetailedStatistics$, StatisticsCoreConfig}
+import com.ng.poc.spark.mortality.report.statistics.{NationStatistics, StateDetailedStatistics, StatisticsCoreConfig}
+import com.ng.poc.spark.mortality.util.SparkReadWriteUtil
 import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql._
 
@@ -24,8 +25,15 @@ object Main {
     val nationStatistics = new NationStatistics(spark)
     val stateStatistics = new StateDetailedStatistics(spark)
 
-    nationStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
-    stateStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
+    val nationResults = nationStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
+    val stateResults = stateStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
+
+    for ((key, value) <- nationResults) {
+      SparkReadWriteUtil.writeReport(value, key)
+    }
+    for ((key, value) <- stateResults) {
+      SparkReadWriteUtil.writeReport(value, key)
+    }
     spark.stop()
   }
 }

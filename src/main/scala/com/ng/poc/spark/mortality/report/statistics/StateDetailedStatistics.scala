@@ -1,17 +1,16 @@
 package com.ng.poc.spark.mortality.report.statistics
 
-import com.google.common.collect.{ImmutableMap, ImmutableSet}
 import com.ng.poc.spark.mortality.datatype.{BaseRecord, Record}
-import com.ng.poc.spark.mortality.util.SparkReadWriteUtil
 import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 
 import scala.collection.mutable
+import scala.collection.mutable.Map
 
 object StateDetailedStatistics extends Serializable {
   @transient lazy val logger = LogManager.getLogger(NationStatistics.getClass);
   private val state = "State"
-  private val stateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/stateOutputFile"
+  val stateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/stateOutputFile"
   private val overallStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/overallStateOutputFile"
   private val maleStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/maleStateOutputFile"
   private val femaleStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/femaleStateOutputFile"
@@ -20,8 +19,9 @@ object StateDetailedStatistics extends Serializable {
 class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics with Serializable {
 
   override
-  def runStats(statisticsConfig: StatisticsCoreConfig, file: String): Unit = {
+  def runStats(statisticsConfig: StatisticsCoreConfig, file: String): Map[String, Dataset[Record]] = {
     StateDetailedStatistics.logger.info("Build report of " + file)
+
 
     val stateDs = statisticsConfig.getBaseDataSet.andThen(getStateDataSet).apply(file)
     val filteredStateDs = filterDSByRaceAndGender(stateDs, "Overall", "Overall")
@@ -30,11 +30,11 @@ class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics wit
     val avgNumberOfDeadPerYear = getAvgNumberOfDeadPerYear(filteredStateDs)
     val bestStateRatesDs = getBestStateRates(filteredStateDs, avgNumberOfDeadPerYear)
 
-    SparkReadWriteUtil.writeReport(stateDs, StateDetailedStatistics.stateOutputFilePath)
-    SparkReadWriteUtil.writeReport(overallDs, StateDetailedStatistics.overallStateOutputFilePath)
-    SparkReadWriteUtil.writeReport(maleDs, StateDetailedStatistics.maleStateOutputFilePath)
-    SparkReadWriteUtil.writeReport(femaleDs, StateDetailedStatistics.femaleStateOutputFilePath)
-    SparkReadWriteUtil.writeReport(bestStateRatesDs, StateDetailedStatistics.bestStateRatesOutputFilePath)
+    var reports = collection.mutable.Map(StateDetailedStatistics.stateOutputFilePath -> stateDs)
+    reports += (StateDetailedStatistics.overallStateOutputFilePath -> overallDs)
+    reports += (StateDetailedStatistics.maleStateOutputFilePath-> maleDs)
+    reports += (StateDetailedStatistics.femaleStateOutputFilePath -> femaleDs)
+    reports += (StateDetailedStatistics.bestStateRatesOutputFilePath-> bestStateRatesDs)
   }
 
   val getStateDataSet = (dataset: Dataset[BaseRecord]) => {
