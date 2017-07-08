@@ -2,14 +2,19 @@ package com.ng.poc.spark.mortality.report.statistics
 
 import org.apache.spark.sql.SparkSession
 import org.specs2.mutable.Specification
+import org.specs2.specification.AfterAll
 
-class NationStatisticsTest extends Specification {
+class NationStatisticsTest extends Specification with AfterAll {
 
   val spark = SparkSession
     .builder()
     .appName("NationStatisticsTest")
     .master("local[2]")
     .getOrCreate()
+
+  override def afterAll(): Unit = {
+    spark.stop()
+  }
 
   "The function get nation dataset" should {
     "return only a dataset of Records with only Nation geographis lvls" in {

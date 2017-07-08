@@ -1,16 +1,16 @@
 package com.ng.poc.spark.mortality.report.statistics
 
 import com.ng.poc.spark.mortality.datatype.{BaseRecord, Record}
-import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
+import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
 import scala.collection.mutable.Map
 
 object StateDetailedStatistics extends Serializable {
-  @transient lazy val logger = LogManager.getLogger(NationStatistics.getClass);
+  @transient lazy val logger = LoggerFactory.getLogger(NationStatistics.getClass);
   private val state = "State"
-  val stateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/stateOutputFile"
+  private val stateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/stateOutputFile"
   private val overallStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/overallStateOutputFile"
   private val maleStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/maleStateOutputFile"
   private val femaleStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/femaleStateOutputFile"

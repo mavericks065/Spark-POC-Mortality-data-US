@@ -2,13 +2,13 @@ package com.ng.poc.spark.mortality.run
 
 import com.ng.poc.spark.mortality.report.statistics.{NationStatistics, StateDetailedStatistics, StatisticsCoreConfig}
 import com.ng.poc.spark.mortality.util.SparkReadWriteUtil
-import org.apache.logging.log4j.LogManager
 import org.apache.spark.sql._
+import org.slf4j.LoggerFactory
 
 object Main {
 
   val appName = "Mortality in the US report"
-  val logger = LogManager.getLogger(Main.getClass)
+  val logger = LoggerFactory.getLogger(Main.getClass)
 
   def main(args: Array[String]) {
 

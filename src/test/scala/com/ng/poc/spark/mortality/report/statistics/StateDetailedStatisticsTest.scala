@@ -2,8 +2,10 @@ package com.ng.poc.spark.mortality.report.statistics
 
 import org.apache.spark.sql.SparkSession
 import org.specs2.mutable.Specification
+import org.specs2.specification.AfterAll
 
-class StateDetailedStatisticsTest extends Specification {
+class StateDetailedStatisticsTest extends Specification with AfterAll {
+
   val spark = SparkSession
     .builder()
     .appName("StateStatisticsTest")
@@ -14,6 +16,10 @@ class StateDetailedStatisticsTest extends Specification {
   val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/test_data.csv"
   val stateStatistics = new StateDetailedStatistics(spark)
   val baseDs = statisticsCore.getBaseDataSet(heartDiseaseMortalityDataCountyFilePath)
+
+  override def afterAll(): Unit = {
+    spark.stop()
+  }
 
   "The function get state dataset" should {
     "return only a dataset of Records with only State geographis lvls" in {
