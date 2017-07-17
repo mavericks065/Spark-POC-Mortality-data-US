@@ -18,13 +18,15 @@ class NationStatistics(sparkSession: SparkSession) extends Statistics with Seria
   def runStats(statisticsConfig: StatisticsCoreConfig, file: String): Map[String, Dataset[Record]] = {
     NationStatistics.logger.info("Build report of " + file)
 
-    val nationDs = statisticsConfig.getBaseDataSet.andThen(getNationDataSet).apply(file)
-
-    Map(NationStatistics.nationOutputFilePath -> nationDs)
+    statisticsConfig.getBaseDataSet.andThen(getNationDataSet).andThen(mapFileToDataset).apply(file)
   }
 
-  val getNationDataSet = (dataset: Dataset[BaseRecord]) => {
+  private val getNationDataSet = (dataset: Dataset[BaseRecord]) => {
     import sparkSession.implicits._
     dataset.filter(filterRecordsByGeographicLvl(_, NationStatistics.nation)).map(convertBaseRecordToRecord)
+  }
+
+  private val mapFileToDataset = (nationDs: Dataset[Record]) => {
+    Map(NationStatistics.nationOutputFilePath -> nationDs)
   }
 }
