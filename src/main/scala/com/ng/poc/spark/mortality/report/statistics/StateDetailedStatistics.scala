@@ -15,6 +15,7 @@ object StateDetailedStatistics extends Serializable {
   private val maleStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/maleStateOutputFile"
   private val femaleStateOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/femaleStateOutputFile"
   private val bestStateRatesOutputFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/bestStateRatesOutputFile"
+  private val overall = "Overall"
 }
 class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics with Serializable {
 
@@ -24,8 +25,8 @@ class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics wit
 
 
     val stateDs = statisticsConfig.getBaseDataSet.andThen(getStateDataSet).apply(file)
-    val filteredStateDs = filterDSByRaceAndGender(stateDs, "Overall", "Overall")
-    val (overallDs, maleDs, femaleDs) = getDataByGenderInDifferentlyOfRace(stateDs)
+    val filteredStateDs = filterDSByRaceAndGender(stateDs, StateDetailedStatistics.overall, StateDetailedStatistics.overall)
+    val (overallDs, maleDs, femaleDs) = getDataByGenderIndependentlyOfRace(stateDs)
 
     val avgNumberOfDeadPerYear = getAvgNumberOfDeadPerYear(filteredStateDs)
     val bestStateRatesDs = getBestStateRates(filteredStateDs, avgNumberOfDeadPerYear)
@@ -37,34 +38,34 @@ class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics wit
     reports += (StateDetailedStatistics.bestStateRatesOutputFilePath-> bestStateRatesDs)
   }
 
-  val getStateDataSet = (dataset: Dataset[BaseRecord]) => {
+  private val getStateDataSet = (dataset: Dataset[BaseRecord]) => {
     import sparkSession.implicits._
     dataset.filter(filterRecordsByGeographicLvl(_, StateDetailedStatistics.state)).map(convertBaseRecordToRecord)
   }
 
-  val filterDSByRaceAndGender : (Dataset[Record], String, String) => Dataset[Record] = (dataset, race, gender) => {
+  private val filterDSByRaceAndGender : (Dataset[Record], String, String) => Dataset[Record] = (dataset, race, gender) => {
     val filter : (Record, String, String) => Boolean = (record, race, gender) => {record.race == race && record.gender == gender}
     dataset.filter(filter(_, race, gender))
   }
 
-  val getDataByGenderInDifferentlyOfRace : (Dataset[Record]) => (Dataset[Record], Dataset[Record], Dataset[Record]) = dataset => {
-    (dataset.filter(record => record.race == "Overall" && record.gender == "Overall"),
-      dataset.filter(record => record.race == "Overall" && record.gender == "Male"),
-      dataset.filter(record => record.race == "Overall" && record.gender == "Female"))
+  private val getDataByGenderIndependentlyOfRace : (Dataset[Record]) => (Dataset[Record], Dataset[Record], Dataset[Record]) = dataset => {
+    (dataset.filter(record => record.race == StateDetailedStatistics.overall && record.gender == StateDetailedStatistics.overall),
+      dataset.filter(record => record.race == StateDetailedStatistics.overall && record.gender == "Male"),
+      dataset.filter(record => record.race == StateDetailedStatistics.overall && record.gender == "Female"))
   }
 
-  val getAvgNumberOfDeadPerYear : (Dataset[Record]) => Map[Int, Double] = dataset => {
+  private val getAvgNumberOfDeadPerYear : (Dataset[Record]) => Map[Int, Double] = dataset => {
     import sparkSession.implicits._
     val array: mutable.WrappedArray[(Int, Double)] = dataset.groupBy("year").avg("numberOfDead").map(convertRowToTuple)
       .collect()
     Map(array:_*)
   }
 
-  val getBestStateRates : (Dataset[Record], Map[Int, Double]) => Dataset[Record] = (dataset, map) => {
+  private val getBestStateRates : (Dataset[Record], Map[Int, Double]) => Dataset[Record] = (dataset, map) => {
     val filter : (Record, Map[Int, Double]) => Boolean = (record, map) => record.numberOfDead > map(record.year)
     import org.apache.spark.sql.functions.desc
     dataset.filter(filter(_, map)).orderBy(desc("year"), desc("numberOfDead"))
   }
 
-  val convertRowToTuple : (Row) => (Int, Double) = row => (row.getAs[Int]("year"), row.getAs[Double]("avg(numberOfDead)"))
+  private val convertRowToTuple : (Row) => (Int, Double) = row => (row.getAs[Int]("year"), row.getAs[Double]("avg(numberOfDead)"))
 }

@@ -16,7 +16,7 @@ class NationStatisticsTest extends Specification with AfterAll {
     spark.stop()
   }
 
-  "The function get nation dataset" should {
+  "The function run stats" should {
     "return only a dataset of Records with only Nation geographis lvls" in {
       val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/test_data.csv"
       val expectedKey = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/nationOutputFile"

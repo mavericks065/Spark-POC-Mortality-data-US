@@ -21,44 +21,36 @@ class StateDetailedStatisticsTest extends Specification with AfterAll {
     spark.stop()
   }
 
-  "The function get state dataset" should {
-    "return only a dataset of Records with only State geographis lvls" in {
-      val result = stateStatistics.getStateDataSet(baseDs)
+  "the function run stats of StateDetailedStatistics" should {
+    val result = stateStatistics.runStats(statisticsCore, heartDiseaseMortalityDataCountyFilePath)
+    "return state, overall, male, female and bestStateRates datasets" in {
+      result.size must_== 5
+    }
+    "return only a dataset of Records with only State geographic lvls" in {
+      val expectedStateKey = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/stateOutputFile"
 
-      result.count() must_== 9
-      val nationList = result.collectAsList()
-      nationList.get(0).numberOfDead must_== 269.3
-      nationList.get(0).geographicLevel must_== "State"
+      val stateListOfRecords = result.get(expectedStateKey).get.collectAsList()
+      stateListOfRecords.get(0).numberOfDead must_== 269.3
+      stateListOfRecords.get(0).geographicLevel must_== "State"
+    }
+    "return only a dataset of Records with only OVERALL sexes" in {
+      val expectedStateKey = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/overallStateOutputFile"
+
+      val stateListOfRecords = result.get(expectedStateKey).get.collectAsList()
+      stateListOfRecords.size() must_== 1
+    }
+    "return only a dataset of Records with only MALE sexes" in {
+      val expectedStateKey = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/maleStateOutputFile"
+
+      val stateListOfRecords = result.get(expectedStateKey).get.collectAsList()
+      stateListOfRecords.size() must_== 1
+    }
+    "return only a dataset of Records with only FEMALE sexes" in {
+      val expectedStateKey = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/femaleStateOutputFile"
+
+      val stateListOfRecords = result.get(expectedStateKey).get.collectAsList()
+      stateListOfRecords.size() must_== 1
     }
   }
 
-  "The function get data by gender" should {
-    "return an integer" in {
-      val ds = stateStatistics.getStateDataSet(baseDs)
-      val (overallDs, maleDs, femaleDs) = stateStatistics.getDataByGenderInDifferentlyOfRace(ds)
-
-      overallDs.count() must_== 1
-      femaleDs.count() must_== 1
-      maleDs.count() must_== 1
-    }
-  }
-
-  "The function filter dataset by race and gender" should {
-    "return a dataset of Records with only the race and record specified" in {
-      val ds = stateStatistics.getStateDataSet(baseDs)
-      val result = stateStatistics.filterDSByRaceAndGender(ds, "Black", "Overall")
-
-      result.count() must_== 1
-    }
-  }
-
-  "The function get average number of dead per year" should {
-    "return a map with one element in 2013 and value " in {
-      val ds = stateStatistics.getStateDataSet(baseDs)
-      val result = stateStatistics.getAvgNumberOfDeadPerYear(ds)
-
-      result.size must_== 1
-      result(2013) must_== 243.38888888888889
-    }
-  }
 }
