@@ -15,6 +15,11 @@ libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.25"
 libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.25" % "test"
 libraryDependencies += "org.postgresql" % "postgresql" % "42.1.1"
 
+coverageEnabled in Test := true
+coverageMinimum := 70
+coverageFailOnMinimum := true
+parallelExecution in Test := false
+
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
   case x => MergeStrategy.first
