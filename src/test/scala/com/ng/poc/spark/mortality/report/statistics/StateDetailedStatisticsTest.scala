@@ -1,25 +1,13 @@
 package com.ng.poc.spark.mortality.report.statistics
 
-import org.apache.spark.sql.SparkSession
-import org.specs2.mutable.Specification
-import org.specs2.specification.AfterAll
+import com.ng.poc.spark.mortality.util.TestUtils
 
-class StateDetailedStatisticsTest extends Specification with AfterAll {
-
-  val spark = SparkSession
-    .builder()
-    .appName("StateStatisticsTest")
-    .master("local[1]")
-    .getOrCreate()
+class StateDetailedStatisticsTest extends TestUtils {
 
   val statisticsCore = new StatisticsCoreConfig(spark)
   val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/test_data.csv"
   val stateStatistics = new StateDetailedStatistics(spark)
   val baseDs = statisticsCore.getBaseDataSet(heartDiseaseMortalityDataCountyFilePath)
-
-  override def afterAll(): Unit = {
-    spark.stop()
-  }
 
   "the function run stats of StateDetailedStatistics" should {
     val result = stateStatistics.runStats(statisticsCore, heartDiseaseMortalityDataCountyFilePath)

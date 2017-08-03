@@ -1,20 +1,8 @@
 package com.ng.poc.spark.mortality.report.statistics
 
-import org.apache.spark.sql.SparkSession
-import org.specs2.mutable.Specification
-import org.specs2.specification.AfterAll
+import com.ng.poc.spark.mortality.util.TestUtils
 
-class StatisticsCoreConfigTest extends Specification with AfterAll {
-
-  val spark = SparkSession
-    .builder()
-    .appName("StatisticsCoreConfigTest")
-    .master("local[2]")
-    .getOrCreate()
-
-  override def afterAll(): Unit = {
-    spark.stop()
-  }
+class StatisticsCoreConfigTest extends TestUtils {
 
   "The function get data frame" should {
     "return only the record fields" in {

@@ -3,15 +3,8 @@ package com.ng.poc.spark.mortality.util
 import java.nio.file.{Files, Paths}
 
 import com.ng.poc.spark.mortality.report.statistics.StatisticsCoreConfig
-import org.apache.spark.sql.SparkSession
-import org.specs2.mutable.Specification
 
-class SparkReadWriteUtilTest extends Specification {
-  val spark = SparkSession
-    .builder()
-    .appName("StatisticsCoreConfigTest")
-    .master("local[2]")
-    .getOrCreate()
+class SparkReadWriteUtilTest extends TestUtils {
 
   "The function write report" should {
     "write a report" in {
