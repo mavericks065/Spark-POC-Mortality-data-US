@@ -3,11 +3,12 @@ version: '2'
 services:
 
   postgres:
+    container_name: sparkPostgres
     image: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=s3cretP4ssword123456789OverrideInPipeline
+      - POSTGRES_PASSWORD=password
       - POSTGRES_DB=sparkpoc
 

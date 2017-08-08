@@ -9,11 +9,11 @@ object Main {
 
   val appName = "Mortality in the US report"
   val logger = LoggerFactory.getLogger(Main.getClass)
+  val nationTable = "nation_statistics"
+  val stateTable = "state_statistics"
+  val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/Spark-POC-Mortality-data-US.csv"
 
   def main(args: Array[String]) {
-
-    val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/Spark-POC-Mortality-data-US.csv"
-
     val sparkBuilder = SparkSession
       .builder()
       .master("local[2]")
@@ -29,11 +29,14 @@ object Main {
     val stateResults = stateStatistics.runStats(statisticsConfig, heartDiseaseMortalityDataCountyFilePath)
 
     for ((key, value) <- nationResults) {
+      SparkReadWriteUtil.save(value, nationTable)
       SparkReadWriteUtil.writeReport(value, key)
     }
     for ((key, value) <- stateResults) {
+      SparkReadWriteUtil.save(value, stateTable)
       SparkReadWriteUtil.writeReport(value, key)
     }
+
     spark.stop()
   }
 }
