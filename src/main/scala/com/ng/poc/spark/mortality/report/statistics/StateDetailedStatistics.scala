@@ -31,11 +31,12 @@ class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics wit
     val avgNumberOfDeadPerYear = getAvgNumberOfDeadPerYear(filteredStateDs)
     val bestStateRatesDs = getBestStateRates(filteredStateDs, avgNumberOfDeadPerYear)
 
-    var reports = collection.mutable.Map(StateDetailedStatistics.stateOutputFilePath -> stateDs)
-    reports += (StateDetailedStatistics.overallStateOutputFilePath -> overallDs)
-    reports += (StateDetailedStatistics.maleStateOutputFilePath-> maleDs)
-    reports += (StateDetailedStatistics.femaleStateOutputFilePath -> femaleDs)
-    reports += (StateDetailedStatistics.bestStateRatesOutputFilePath-> bestStateRatesDs)
+    Map(StateDetailedStatistics.stateOutputFilePath -> stateDs,
+      StateDetailedStatistics.overallStateOutputFilePath -> overallDs,
+      StateDetailedStatistics.maleStateOutputFilePath-> maleDs,
+      StateDetailedStatistics.femaleStateOutputFilePath -> femaleDs,
+      StateDetailedStatistics.bestStateRatesOutputFilePath-> bestStateRatesDs
+    )
   }
 
   private val getStateDataSet = (dataset: Dataset[BaseRecord]) => {
