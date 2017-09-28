@@ -33,7 +33,7 @@ class StateDetailedStatistics(sparkSession: SparkSession) extends Statistics wit
 
     Map(StateDetailedStatistics.stateOutputFilePath -> stateDs,
       StateDetailedStatistics.overallStateOutputFilePath -> overallDs,
-      StateDetailedStatistics.maleStateOutputFilePath-> maleDs,
+      StateDetailedStatistics.maleStateOutputFilePath -> maleDs,
       StateDetailedStatistics.femaleStateOutputFilePath -> femaleDs,
       StateDetailedStatistics.bestStateRatesOutputFilePath-> bestStateRatesDs
     )
