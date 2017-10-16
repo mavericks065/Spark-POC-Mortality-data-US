@@ -1,8 +1,8 @@
 package com.ng.poc.spark.mortality.report.statistics
 
-import com.ng.poc.spark.mortality.util.TestUtils
+import com.ng.poc.spark.mortality.util.SparkSessionProvider
 
-class StatisticsCoreConfigTest extends TestUtils {
+class StatisticsCoreConfigTest extends SparkSessionProvider {
 
   "The function get data frame" should {
     "return only the record fields" in {

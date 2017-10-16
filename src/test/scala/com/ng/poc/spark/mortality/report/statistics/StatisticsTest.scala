@@ -1,10 +1,10 @@
 package com.ng.poc.spark.mortality.report.statistics
 
 import com.ng.poc.spark.mortality.datatype.{BaseRecord, Record}
-import com.ng.poc.spark.mortality.util.TestUtils
+import com.ng.poc.spark.mortality.util.SparkSessionProvider
 import org.apache.spark.sql.Dataset
 
-class StatisticsTest extends TestUtils {
+class StatisticsTest extends SparkSessionProvider {
 
   "The function convert base record to record" should {
     "return record" in {

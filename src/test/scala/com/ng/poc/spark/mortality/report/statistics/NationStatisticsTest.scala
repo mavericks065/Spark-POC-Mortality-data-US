@@ -1,8 +1,8 @@
 package com.ng.poc.spark.mortality.report.statistics
 
-import com.ng.poc.spark.mortality.util.TestUtils
+import com.ng.poc.spark.mortality.util.SparkSessionProvider
 
-class NationStatisticsTest extends TestUtils {
+class NationStatisticsTest extends SparkSessionProvider {
 
   "The function run stats" should {
     "return only a dataset of Records with only Nation geographis lvls" in {

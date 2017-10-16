@@ -1,8 +1,8 @@
 package com.ng.poc.spark.mortality.report.statistics
 
-import com.ng.poc.spark.mortality.util.TestUtils
+import com.ng.poc.spark.mortality.util.SparkSessionProvider
 
-class StateDetailedStatisticsTest extends TestUtils {
+class StateDetailedStatisticsTest extends SparkSessionProvider {
 
   val statisticsCore = new StatisticsCoreConfig(spark)
   val heartDiseaseMortalityDataCountyFilePath = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/test_data.csv"

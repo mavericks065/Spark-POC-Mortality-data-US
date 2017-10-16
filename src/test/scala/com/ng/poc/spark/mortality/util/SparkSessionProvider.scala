@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory
 import org.specs2.mutable.Specification
 import org.specs2.specification.AfterAll
 
-class TestUtils extends Specification with AfterAll {
+trait SparkSessionProvider extends Specification with AfterAll {
 
-  val logger = LoggerFactory.getLogger(classOf[TestUtils])
+  val logger = LoggerFactory.getLogger(classOf[SparkSessionProvider])
 
   logger.info("Creating SparkSession for tests")
 

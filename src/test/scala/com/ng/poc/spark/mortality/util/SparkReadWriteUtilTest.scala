@@ -7,7 +7,7 @@ import com.ng.poc.spark.mortality.report.statistics.StatisticsCoreConfig
 import scala.reflect.io.{File, Path}
 import scala.util.Try
 
-class SparkReadWriteUtilTest extends TestUtils {
+class SparkReadWriteUtilTest extends SparkSessionProvider {
 
   val outputFile = "/Users/nicolasguignard-octo/Nicolas/priv_workspace/Spark-POC-Mortality-data-US/outputFile"
 
